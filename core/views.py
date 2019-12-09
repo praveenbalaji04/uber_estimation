@@ -1,7 +1,6 @@
 from flask import Blueprint, request, jsonify
 from core.logics import uber_estimate, here_maps_estimate, schedule_email
 from datetime import datetime, timedelta
-import pytz
 
 
 uber = Blueprint('uber', __name__)
@@ -73,11 +72,11 @@ def estimate():
             travel_estimation_time = here_maps_estimate(source, destination)
             total_travelling_minutes = travel_estimation_time + uber_estimation_time
             hours, minutes = time_to_reach_destination.split('.')
-            now = datetime.now(tz=pytz.timezone("Asia/Kolkata"))
+            now = datetime.now() + timedelta(hours=5, minutes=30)
             start_time = datetime(
                 year=now.year, month=now.month, day=now.day, hour=int(hours), minute=int(minutes))\
                 - timedelta(minutes=total_travelling_minutes)
-            if start_time < now:
+            if start_time.timestamp() < now.timestamp():
                 response = {
                     'status': False, 'data': None, 'error': 'Its already late, please increase the time_to_reach hours or minutes'}
             else:
