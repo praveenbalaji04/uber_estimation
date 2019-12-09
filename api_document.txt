@@ -1,0 +1,40 @@
+1. /ping
+This URL is to test the success response of API
+
+2. /estimate
+    query_params:
+        1. source
+        2. destination
+        3. time_to_reach
+        4. email
+
+    source input should be latitude and longitude location
+    destination input should be latitude and longitude location
+    time_to_reach should be in 24 hrs format, hours and minutes seperated by dot(.)
+    email, user email to receive notification
+
+    response:
+        success response:
+            {
+                data: "Email will be triggered at 2019-12-09 10:32:00",
+                status: true,
+                error: null
+            }
+        failure response:
+            {
+                data: null,
+                status: false,
+                error: "Its already late, please increase the time_to_reach hours or minutes"
+            }
+            or 
+            {
+                data: null,
+                status: false,
+                error: "No cab nearby to book"
+            }
+            or incase of missing params
+            {
+                data: null,
+                status: false,
+                error: "Please add all the parameters"
+            }

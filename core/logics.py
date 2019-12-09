@@ -50,7 +50,9 @@ def schedule_email(timestamp, email):
         sg.send(message)
         response['status'] = True
         response['data'] = 'Email will be triggered at {}'.format(datetime.fromtimestamp(timestamp))
+        response['error'] = None
     except Exception:
         response['status'] = False
-        response['data'] = 'Error in sending email'
+        response['error'] = 'Error in sending email'
+        response['data'] = None
     return response
