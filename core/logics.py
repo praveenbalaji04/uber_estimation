@@ -3,7 +3,7 @@ from config import Config
 from datetime import datetime
 
 
-def uber_estimate(latitude='77.627600', longitude='12.927880'):
+def uber_estimate(latitude, longitude):
     # returns estimation time of uberGO
     uber_url = (
         "https://rr1iky5f5f.execute-api.us-east-1.amazonaws.com/api/estimate/time?start_longitude={}&start_latitude={}".format(longitude, latitude))
@@ -42,8 +42,6 @@ def schedule_email(timestamp, email):
         to_emails=email,
         subject='Book Uber',
         html_content='<strong>Time to book an Uber</strong>')
-    if datetime.now().timestamp() > timestamp:
-        raise KeyboardInterrupt
     message.send_at = int(timestamp)
     try:
         sg = SendGridAPIClient(Config.SENDGRID_API_KEY)

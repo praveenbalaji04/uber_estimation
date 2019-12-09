@@ -8,7 +8,7 @@ uber = Blueprint('uber', __name__)
 
 @uber.route('/ping')
 def ping():
-    return jsonify({})
+    return jsonify({"status": True})
 
 
 @uber.route('/estimate')
@@ -22,9 +22,14 @@ def estimate():
     Reseponse:
         success response:
             {
-                data: "Email will be triggered at 2019-12-09 10:32:00",
+                data: {
+                    Email notification time: "15:13:00",
+                    Request created time (current time): "14:53:30",
+                    Time to reach the destination: "15.30",
+                    Total time to reach the place: 17,
+                    },
+                error: null,
                 status: true,
-                error: null
             }
         failure response:
             {
@@ -75,5 +80,15 @@ def estimate():
                 response = {
                     'status': False, 'data': None, 'error': 'Its already late, please increase the time_to_reach hours or minutes'}
             else:
-                response = schedule_email(start_time.timestamp(), email)
+                sendgrid_response = schedule_email(start_time.timestamp(), email)
+                response_data = {
+                    "Request created time (current time)": now.strftime("%X"),
+                    "Email notification time": start_time.strftime("%X"),
+                    "Total time to reach the place": total_travelling_minutes,
+                    "Time to reach the destination": time_to_reach_destination
+                }
+                response['status'] = sendgrid_response.get('status')
+                response['data'] = response_data
+                response['error'] = sendgrid_response.get('error')
+
     return jsonify(response)

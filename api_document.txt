@@ -16,9 +16,14 @@ This URL is to test the success response of API
     response:
         success response:
             {
-                data: "Email will be triggered at 2019-12-09 10:32:00",
+                data: {
+                    Email notification time: "15:13:00",
+                    Request created time (current time): "14:53:30",
+                    Time to reach the destination: "15.30",
+                    Total time to reach the place: 17,
+                    },
+                error: null,
                 status: true,
-                error: null
             }
         failure response:
             {
